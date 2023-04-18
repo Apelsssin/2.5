@@ -2,31 +2,33 @@
 class Figure {
 protected:
 	std::string name;
-	int a;
-	int b;
-	int c;
-	int A;
-	int B;
-	int C;
 	int sides;
 public: 
 	int get_sides() { return sides;}
 	std::string get_name() { return name; }
 	Figure() {
 		name = "Фигура";
-		a = 0;
-		b = 0;
-		c = 0;
-		A = 0;
-		B = 0;
-		C = 0;
 		sides = 0;
 	}
 	virtual bool check () { 
 		int sides = this->sides;
 		if (sides == 0) return true; else false; }
+	virtual void print() {
+		std::cout << get_name() << ":\n";
+		if (check()) std::cout << "Правильная\n";
+		else std::cout << "Неправильная\n";
+		std::cout << "Количество сторон: " << get_sides() << "\n";
+		std::cout << "\n\n";
+	}
 };
 class Triangle : public Figure {
+protected:
+	int a;
+	int b;
+	int c;
+	int A;
+	int B;
+	int C;
 public:
 	bool check () override { 
 		int sides = this->sides;
@@ -61,6 +63,15 @@ public:
 	int get_A() { return A; }
 	int get_B() { return B; }
 	int get_C() { return C; }
+	void print() override {
+		std::cout << name << ":\n";
+		if (check()) std::cout << "Правильная\n";
+		else std::cout << "Неправильная\n";
+		std::cout << "Количество сторон: " << get_sides() << "\n";
+		std :: cout << "Стороны: a=" << get_a() << "    b=" << get_b() << "   c=" << get_c();
+		std::cout << "\n" << "Углы: A=" << get_A() << "   B=" << get_B() << "   C=" << get_C() << "\n";
+		std::cout << "\n\n";
+	}
 };
 class right_t : public Triangle {
 public:
@@ -74,7 +85,7 @@ public:
 		int A = this->A;
 		int B = this->B;
 		int C = this->C;
-		if (C == 90 && A+B+C==180) return true;
+		if (C == 90 && Triangle::check()) return true;
 		else return false;
 	}
 };
@@ -93,7 +104,7 @@ public:
 		int C = this->C;
 		int a = this->a;
 		int c = this->c;
-		if (A == C && a == c && (A+B+C==180))
+		if (A == C && a == c && Triangle::check())
 			return true;
 		else return false;
 	}
@@ -117,7 +128,7 @@ public:
 		int a = this->a;
 		int b = this->b;
 		int c = this->c;
-		if (a == b && a == c && A == B && A == C && A == 60)
+		if (a == b && isosceles_t::check() && A == B && A == 60)
 			return true;
 		else false;
 	}
@@ -125,6 +136,12 @@ public:
 
 class Quadrangle : public Figure {
 protected:
+	int a;
+	int b;
+	int c;
+	int A;
+	int B;
+	int C;
 	int d;
 	int D;
 public:
@@ -157,7 +174,8 @@ public:
 		int B = this->B;
 		int C = this->C;
 		int D = this->D;
-		if (A + B + C + D == 360)
+		int sides = this->sides;
+		if (A + B + C + D == 360 && sides == 4)
 			return true;
 		else return false;
 	}
@@ -170,6 +188,18 @@ public:
 	int get_B() { return B; }
 	int get_C() { return C; }
 	int get_D() { return D; }
+
+	void print () override {
+		std::cout << get_name() << ":\n";
+		if (check()) std::cout << "Правильная\n";
+		else std::cout << "Неправильная\n";
+		std::cout << "Количество сторон: " << get_sides() << "\n";
+		std::cout << "Стороны: a=" << get_a() << "    b=" << get_b() << "   c=" << get_c();
+		std::cout << "   d=" << get_d();
+		std::cout << "\n" << "Углы: A=" << get_A() << "   B=" << get_B() << "   C=" << get_C();
+		std::cout << "   D=" << get_D() << "\n";
+		std::cout << "\n\n";
+	}
 };
 class parallelogram : public Quadrangle {
 public:
@@ -191,7 +221,7 @@ public:
 		int b = this->b;
 		int c = this->c;
 		int d = this->d;
-		if (A + B + C + D == 360 && A == C && a == c && B == D && b == d)
+		if (Quadrangle::check() && A == C && a == c && B == D && b == d)
 			return true;
 		else return false;
 	}
@@ -218,7 +248,7 @@ public:
 		int b = this->b;
 		int c = this->c;
 		int d = this->d;
-		if (A + B + C + D == 360 && A == C && a == c && B == D && b == d && A == B && A == 90)
+		if (parallelogram::check() && A == B && A == 90)
 			return true;
 		else return false;
 	}
@@ -248,7 +278,7 @@ public:
 		int b = this->b;
 		int c = this->c;
 		int d = this->d;
-		if (A + B + C + D == 360 && A == C && a == c && B == D && b == d && A == B && A == 90 && a == b)
+		if (rectangle::check() && a == b)
 			return true;
 		else return false;
 	}
@@ -274,33 +304,13 @@ public:
 		int b = this->b;
 		int c = this->c;
 		int d = this->d;
-		if (A + B + C + D == 360 && A == C && a == c && B == D && b == d)
+		if (parallelogram::check() && a == b)
 			return true;
 		else return false;
 	}
 };
-void print(Figure* adress) {
-	std::cout << adress->get_name() << ":\n";
-	if (adress->check()) std::cout << "Правильная\n";
-	else std::cout << "Неправильная\n";
-	std::cout << "Количество сторон: " << adress->get_sides() << "\n";
-	std::cout << "\n\n";
-}
-void print1(Triangle* adress) {
-	std::cout << adress->get_name() << ":\n" << "Стороны: a=" << adress->get_a() << "    b=" << adress->get_b() << "   c=" << adress->get_c();
-	std::cout << "\n" << "Углы: A=" << adress->get_A() << "   B=" << adress->get_B() << "   C=" << adress->get_C() << "\n";
-	if (adress->check()) std::cout << "Правильная\n";
-	else std::cout << "Неправильная\n";
-	std::cout << "\n\n";
-}
-void print2(Quadrangle* adress) {
-	std::cout << adress->get_name() << ":\n" << "Стороны: a=" << adress->get_a() << "    b=" << adress->get_b() << "   c=" << adress->get_c();
-	std::cout << "   d=" << adress->get_d();
-	std::cout << "\n" << "Углы: A=" << adress->get_A() << "   B=" << adress->get_B() << "   C=" << adress->get_C();
-	std::cout << "   D=" << adress->get_D() << "\n";
-	if (adress->check()) std::cout << "Правильная\n";
-	else std::cout << "Неправильная\n";
-	std::cout << "\n\n";
+void print (Figure* adress) {
+	adress->print();
 }
 int main() {
 	setlocale(LC_ALL, "Russian");
@@ -309,30 +319,29 @@ int main() {
 	print(fig_q);
 	Triangle tri;
 	Triangle* tri_q = &tri;
-	print1(tri_q);
+	print(tri_q);
 	right_t rig;
 	Triangle* rig_q = &rig;
-	print1(rig_q);
+	print(rig_q);
 	isosceles_t iso;
 	Triangle* iso_q = &iso;
-	print1(iso_q);
+	print(iso_q);
 	equilateral_t equ;
 	Triangle* equ_q = &equ;
-	print1(equ_q);
+	print(equ_q);
 	Quadrangle qua;
 	Quadrangle* qua_q = &qua;
-	print2(qua_q);
+	print(qua_q);
 	parallelogram par;
 	Quadrangle* par_q = &par;
-	print2(par_q);
+	print(par_q);
 	rectangle rec;
 	Quadrangle* rec_q = &rec;
-	print2(rec_q);
+	print(rec_q);
 	square sq;
 	Quadrangle* sq_q = &sq;
-	print2(sq_q);
+	print(sq_q);
 	rhombus rho;
 	Quadrangle* rho_q = &rho;
-	print2(rho_q);
-
+	print(rho_q);
 }
