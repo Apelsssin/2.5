@@ -12,7 +12,6 @@ public:
 	}
 	virtual void print() {
 		std::cout << get_name() << ":\n";
-		std::cout << "Количество сторон: " << get_sides() << "\n";
 		std::cout << "\n\n";
 	}
 };
@@ -25,14 +24,6 @@ protected:
 	int B;
 	int C;
 public:
-	void set(int a, int b, int c, int A, int B, int C) {
-		this->a = a;
-		this->b = b;
-		this->c = c;
-		this->A = A;
-		this->B = B;
-		this->C = C;
-	}
 	Triangle(int a, int b, int c, int A, int B, int C) {
 		this->name = "треугольник";
 		this->a = a;
@@ -60,31 +51,24 @@ public:
 };
 class right_t : public Triangle {
 public:
-	right_t(int a, int b, int c, int A, int B, int C) : Triangle(a, b, c, A, B, 90) {
+	right_t(int a, int b, int c, int A, int B) : Triangle(a, b, c, A, B, 90) {
 		name = "прямоугольный треугольник";
-		set(a, b, c, A, B, 90);
 	}
-	right_t() : right_t(10, 20, 30, 50, 60, 70) { ; }
+	right_t() : right_t(10, 20, 30, 50, 60) { ; }
 };
 class isosceles_t : public Triangle {
 public:
-	isosceles_t(int a, int b, int c, int A, int B, int C) : Triangle(a, b, c, A, B, C) {
+	isosceles_t(int a, int b, int A, int B) : Triangle(a, b, a, A, B, A) {
 		name = "равнобедренный треугольник";
-		A = C;
-		a = c;
-		set(a, b, c, A, B, C);
 	}
-	isosceles_t() : isosceles_t(10, 20, 30, 50, 60, 70) { ; }
+	isosceles_t() : isosceles_t(10, 20, 50, 60) { ; }
 };
 class equilateral_t : public isosceles_t {
 public:
-	equilateral_t(int a, int b, int c, int A, int B, int C) : isosceles_t(a, b, c, 60, 60, 60) {
+	equilateral_t(int a) : isosceles_t(a, a, 60, 60) {
 		name = "равносторонний треугольник";
-		a = b;
-		c = b;
-		set(a, b, c, 60, 60, 60);
 	}
-	equilateral_t() : equilateral_t(10, 20, 30, 50, 60, 70) { ; }
+	equilateral_t() : equilateral_t(10) { ; }
 };
 
 class Quadrangle : public Figure {
@@ -111,16 +95,6 @@ public:
 		this->sides = 4;
 	}
 	Quadrangle() : Quadrangle(10, 20, 30, 40, 50, 60, 70, 80) { ; }
-	void set(int a, int b, int c, int d, int A, int B, int C, int D) {
-		this->a = a;
-		this->b = b;
-		this->c = c;
-		this->d = d;
-		this->A = A;
-		this->B = B;
-		this->C = C;
-		this->D = D;
-	}
 	std::string get_name() { return name; }
 	int get_a() { return a; }
 	int get_b() { return b; }
@@ -142,51 +116,33 @@ public:
 };
 class parallelogram : public Quadrangle {
 public:
-	parallelogram() : parallelogram(10, 20, 30, 40, 50, 60, 70, 80) { ; }
-	parallelogram(int a, int b, int c, int d, int A, int B, int C, int D) : Quadrangle(a, b, c, d, A, B, C, D) {
+	parallelogram() : parallelogram(10, 20, 50, 60) { ; }
+	parallelogram(int a, int b, int A, int B) : Quadrangle(a, b, a, b, A, B, A, B) {
 		name = "параллелограмм";
-		a = c;
-		b = d;
-		A = C;
-		B = D;
-		set(a, b, c, d, A, B, C, D);
 	}
 };
 class rectangle : public parallelogram {
 public:
-	rectangle() : rectangle(10, 20, 30, 40, 50, 60, 70, 80) { ; }
-	rectangle(int a, int b, int c, int d, int A, int B, int C, int D) : parallelogram(a, b, c, d, 90, 90, 90, 90) {
+	rectangle() : rectangle(10, 20) { ; }
+	rectangle(int a, int b) : parallelogram(a, b, 90, 90) {
 		name = "прямоугольник";
-		a = c;
-		b = d;
-		set(a, b, c, d, 90, 90, 90, 90);
 	}
 };
 class square : public rectangle {
 public:
 
-	square(int a, int b, int c, int d, int A, int B, int C, int D) : rectangle(a, b, c, d, 90, 90, 90, 90) {
+	square(int a) : rectangle(a, a) {
 		name = "квадрат";
-		b = a;
-		c = a;
-		d = a;
-		set(a, b, c, d, 90, 90, 90, 90);
 	}
 
-	square() : square(10, 20, 30, 40, 50, 60, 70, 80) { ; }
+	square() : square(10) { ; }
 };
 class rhombus : public parallelogram {
 public:
-	rhombus(int a, int b, int c, int d, int A, int B, int C, int D) : parallelogram(a, b, c, d, A, B, C, D) {
+	rhombus(int a, int A, int B) : parallelogram(a, a, A, B) {
 		name = "ромб";
-		a = c;
-		b = c;
-		d = c;
-		C = A;
-		D = B;
-		set(a, b, c, d, A, B, C, D);
 	}
-	rhombus() : rhombus(10, 20, 30, 40, 50, 60, 70, 80) { ; }
+	rhombus() : rhombus(10, 60, 70) { ; }
 };
 void print(Figure* adress) {
 	adress->print();
