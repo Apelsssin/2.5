@@ -35,7 +35,7 @@ public:
 		int A = this->A;
 		int B = this->B;
 		int C = this->C;
-		if (sides == 3 && A+B+C==180) return true; else false; }
+		if (sides == 3 && A+B+C==180) return true; else return false; }
 	Triangle(int a, int b, int c, int A, int B, int C) {
 		this->name = "треугольник";
 		this->a = a;
